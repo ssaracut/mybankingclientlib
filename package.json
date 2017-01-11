@@ -28,14 +28,17 @@
     "babel-preset-react": "^6.5.0",
     "browserify": "^13.0.0",
     "chai": "^3.5.0",
+    "chai-as-promised": "^6.0.0",
     "coveralls": "^2.11.9",
     "envify": "^3.4.0",
+    "immutable": "^3.8.1",
     "jsdom": "^8.4.0",
     "mocha": "^2.5.2",
     "mocha-junit-reporter": "^1.11.1",
     "react-addons-test-utils": "^15.1.0",
     "redux": "^3.6.0",
     "redux-promise": "^0.5.3",
+    "sinon": "^1.17.7",
     "uglifyjs": "^2.4.10"
   },
   "repository": {
