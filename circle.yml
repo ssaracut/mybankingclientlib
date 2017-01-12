@@ -3,8 +3,8 @@ machine:
     version: 5.7.0
 test:
   post:
-      - mv ./coverage $CIRCLE_TEST_REPORTS/
-      - cat $CIRCLE_TEST_REPORTS/coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
+    - mv ./coverage $CIRCLE_TEST_REPORTS/
+    - cat $CIRCLE_TEST_REPORTS/coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
 deployment:
   production:
     branch: master
