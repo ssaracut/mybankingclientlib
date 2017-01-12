@@ -1,0 +1,3 @@
+instrumentation:
+    excludes: ['*.config.js','**/dist/**']
+    include-all-sources: true
