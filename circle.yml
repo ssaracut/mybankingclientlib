@@ -4,7 +4,7 @@ machine:
 test:
   post:
     - mv ./coverage $CIRCLE_TEST_REPORTS/
-    - cat $CIRCLE_TEST_REPORTS/coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
+    - cat $CIRCLE_TEST_REPORTS/coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js -v
 deployment:
   release:
     tag: /v(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(-(0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(\.(0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*)?(\+[0-9a-zA-Z-]+(\.[0-9a-zA-Z-]+)*)?/
