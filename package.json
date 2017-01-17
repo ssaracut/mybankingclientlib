@@ -7,6 +7,9 @@
     "build": "babel src -d dist",
     "test": "babel-node node_modules/babel-istanbul/lib/cli cover node_modules/mocha/bin/_mocha -- --recursive"
   },
+  "files": [
+    "./dist"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ssaracut/mybankingclientlib.git"
