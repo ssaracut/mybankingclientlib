@@ -1,15 +1,12 @@
 {
   "name": "mybankingclientlib",
-  "version": "1.0.0-alpha.3",
+  "version": "1.0.0-alpha.4",
   "description": "Library of core functionality.",
   "main": "./dist/index.js",
   "scripts": {
     "build": "babel src -d dist",
     "test": "babel-node node_modules/babel-istanbul/lib/cli cover node_modules/mocha/bin/_mocha -- --recursive"
   },
-  "files": [
-    "./dist"
-  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ssaracut/mybankingclientlib.git"
