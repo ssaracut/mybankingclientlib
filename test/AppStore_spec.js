@@ -16,7 +16,7 @@ describe('AppStore', () => {
           profile: undefined,
           nav: {
             items: [
-              { page: "", icon: "home", label: "Home" }
+              { page: "/", icon: "home", label: "Home" }
             ]
           },
           options: [{ page: "login", icon: "done", label: "Login" }]
