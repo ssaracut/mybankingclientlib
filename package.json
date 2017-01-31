@@ -1,6 +1,6 @@
 {
   "name": "mybankingclientlib",
-  "version": "1.0.0-alpha.5",
+  "version": "1.0.0-alpha.6",
   "description": "Library of core functionality.",
   "main": "./dist/index.js",
   "scripts": {

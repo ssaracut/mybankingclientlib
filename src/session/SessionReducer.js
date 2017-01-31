@@ -5,7 +5,7 @@ const _initialState = {
         profile: undefined,
         nav: {
             items: [
-                { page: "/", icon: "home", label: "Home" }
+                { page: "", icon: "home", label: "Home" }
             ]
         },
         options: [{ page: "login", icon: "done", label: "Login" }]
@@ -13,7 +13,7 @@ const _initialState = {
 }
 const loggedInNav = {
     items: [
-        { page: "/", icon: "home", label: "Home" },
+        { page: "", icon: "home", label: "Home" },
         { page: "accounts", icon: "account_balance_wallet", label: "Accounts" },
         { page: "profiles", icon: "account_balance_wallet", label: "Profiles" }
     ]
