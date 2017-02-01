@@ -3,20 +3,16 @@ import { Profile, Account } from './DataTypes'
 export default class BbvaApi {
 
     /*
-        https://www.npmjs.com/package/react-cookie
-        Should probably move the local storage to a cookie with path set, httponly = true, and secure = true
-        to help make the access token and refresh token harder to grab by malicious code
+        This will eventually move into a middleware on the server side.  A lot of
+        the values in here will be pulled from config based off environment variables
+        but since those are static with the client build we have to derrive things
+        like the endpoints and redirectUri from the client.
     */
 
-    /*
-        Pretty sure I'm breaking rules by modifying the profile object directly here rather than having a subsequent
-        action call since the redux session.profile value will be out of sync now.  Will fix this later.
-    */
-
-    static getAuthToken(key) {
+    static getAuthToken(key,redirectUri) {
         return new Promise(function (resolve, reject) {
             const authorization = btoa("app.bbva.mynewapp:gQZxI*hKVUF64ADt9BC34rmVT5Ztk0YtiQzBHv3LO2CtsIxS612q$xFBcawpJs4S");
-            const url = `https://connect.bbva.com/token?grant_type=authorization_code&code=${key}&redirect_uri=https://localhost:3000/bbva`;
+            const url = `https://connect.bbva.com/token?grant_type=authorization_code&code=${key}&redirect_uri=${redirectUri}`;
             const options = {
                 method: 'POST',
                 headers: {

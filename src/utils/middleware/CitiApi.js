@@ -4,17 +4,12 @@ import { Profile, Account } from './DataTypes'
 export default class CitiApi {
 
     /*
-        https://www.npmjs.com/package/react-cookie
-        Should probably move the local storage to a cookie with path set, httponly = true, and secure = true
-        to help make the access token and refresh token harder to grab by malicious code
+        This will eventually move into a middleware on the server side.  A lot of
+        the values in here will be pulled from config based off environment variables
+        but since those are static with the client build we have to derrive things
+        like the endpoints and redirectUri from the client.
     */
-
-    /*
-        Pretty sure I'm breaking rules by modifying the profile object directly here rather than having a subsequent
-        action call since the redux session.profile value will be out of sync now.  Will fix this later.
-    */
-
-    static getAuthToken(key) {
+    static getAuthToken(key, redirectUri) {
         return new Promise(function (resolve, reject) {
             const authorization = btoa("a12b4efd-d529-416a-ab19-37585d54b0a3:C7cV5aO5bH2rP6oE4gO3vV2bO5kO6sU3iV5lN8xQ4rY4iN6cT8");
             const url = `https://sandbox.apihub.citi.com/gcb/api/authCode/oauth2/token/sg/gcb`;
@@ -24,7 +19,7 @@ export default class CitiApi {
                     'Content-Type': 'application/x-www-form-urlencoded',
                     'Authorization': `Basic ${authorization}`
                 },
-                body: `grant_type=authorization_code&code=${key}&redirect_uri=https://localhost:3000/citi`,
+                body: `grant_type=authorization_code&code=${key}&redirect_uri=${redirectUri}`,
                 mode: 'cors'
             }
 

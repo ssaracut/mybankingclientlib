@@ -16,14 +16,24 @@ export default class MyBankingClientApi {
         })
     }
 
-    static getApiAuthToken(api, code) {
+    //not sure why this is here? will probably move it out
+    static dialogHandler(openDialog) {
         return new Promise(function (resolve, reject) {
-            middleware.getApiAuthToken(api,code)
+            localStorage.setItem('openDialog', JSON.stringify(openDialog));
+            resolve(JSON.parse(localStorage.getItem('openDialog')));
+        })
+    }
+
+    // convert to remote call to middleware
+    static getApiAuthToken(api, code, redirectUri) {
+        return new Promise(function (resolve, reject) {
+            middleware.getApiAuthToken(api,code, redirectUri)
                 .then(function (response) { resolve(response); })
                 .catch(function (error) { reject(error); });
         })
     }
 
+    // convert to remote call to middleware
     static getProfile() {
         return new Promise(function (resolve, reject) {
             middleware.getProfile()
@@ -32,6 +42,7 @@ export default class MyBankingClientApi {
         })
     }
 
+    // convert to remote call to middleware
     static setProfile(profile) {
         return new Promise(function (resolve, reject) {
             middleware.setProfile(profile)
@@ -40,6 +51,7 @@ export default class MyBankingClientApi {
         })
     }
 
+    // convert to remote call to middleware
     static login() {
         return new Promise(function (resolve, reject) {
             middleware.login()
@@ -50,6 +62,7 @@ export default class MyBankingClientApi {
         })
     }
 
+    // convert to remote call to middleware
     static logout() {
         return new Promise(function (resolve, reject) {
             middleware.logout()
@@ -59,7 +72,8 @@ export default class MyBankingClientApi {
                 })
         })
     }
-
+    
+    // convert to remote call to middleware
     static getAccounts() {
         return new Promise(function (resolve, reject) {
             middleware.getAccounts()
@@ -68,6 +82,7 @@ export default class MyBankingClientApi {
         })
     }
 
+    // convert to remote call to middleware
     static getAccountTransactions(detailLink) {
         return new Promise(function (resolve, reject) {
             middleware.getAccountTransactions(detailLink)
@@ -76,10 +91,4 @@ export default class MyBankingClientApi {
         })
     }
 
-    static dialogHandler(openDialog) {
-        return new Promise(function (resolve, reject) {
-            localStorage.setItem('openDialog', JSON.stringify(openDialog));
-            resolve(JSON.parse(localStorage.getItem('openDialog')));
-        })
-    }
 }

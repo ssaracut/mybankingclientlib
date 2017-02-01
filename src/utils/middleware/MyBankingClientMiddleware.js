@@ -11,10 +11,10 @@ const ApiAdapters = {
 
 export default class MyBankingClientMiddleware {
 
-    static getApiAuthToken(bank, key) {
+    static getApiAuthToken(bank, key, redirectUri) {
         return new Promise(function (resolve, reject) {
             const profile = JSON.parse(localStorage.getItem('profile'));
-            ApiAdapters[bank].getAuthToken(key)
+            ApiAdapters[bank].getAuthToken(key, redirectUri)
                 .then(function (data) {
                     profile.banks[bank] = { auth_data: data };
                     localStorage.setItem('profile', JSON.stringify(profile));
