@@ -1,4 +1,4 @@
-import { Profile, Account } from './DataTypes'
+import { Profile, Accounts, Account, AccountTransactions } from './DataTypes'
 
 export default class BbvaApi {
 
@@ -9,7 +9,7 @@ export default class BbvaApi {
         like the endpoints and redirectUri from the client.
     */
 
-    static getAuthToken(key,redirectUri) {
+    static getAuthToken(key, redirectUri) {
         return new Promise(function (resolve, reject) {
             const authorization = btoa("app.bbva.mynewapp:gQZxI*hKVUF64ADt9BC34rmVT5Ztk0YtiQzBHv3LO2CtsIxS612q$xFBcawpJs4S");
             const url = `https://connect.bbva.com/token?grant_type=authorization_code&code=${key}&redirect_uri=${redirectUri}`;
@@ -106,19 +106,7 @@ export default class BbvaApi {
                 .then(function (response) {
                     console.log('Accounts Request succeeded with JSON response', response);
                     if (response.result.code === 200) {
-                        let accounts = [];
-                        response.data.accounts.forEach(account => {
-                            accounts.push(new Account({
-                                accountKey: account.id,
-                                description: account.description,
-                                name: account.description,
-                                number: account.number,
-                                classification: account.type,
-                                balance: account.balance,
-                                currency: account.currency,
-                                detailLink: account.links.detail.href
-                            }))
-                        })
+                        const accounts = Accounts.parseBbvaAccounts(response.data.accounts);
                         resolve(accounts);
                     } else if (response.result.code === 401 && response.result.internal_code === "invalid_token") {
                         this.refreshAuthToken(refresh)
@@ -134,6 +122,7 @@ export default class BbvaApi {
                 });
         }.bind(this));
     }
+
 
     static getAccountTransactions(detailLink) {
         return new Promise(function (resolve, reject) {
@@ -153,14 +142,15 @@ export default class BbvaApi {
                 .then(function (response) {
                     return response.json();
                 })
-                .then(function (data) {
-                    console.log('Account Transactions Request succeeded with JSON response', data);
-                    if (data.result.code === 200 || data.result.code === 206) {
-                        resolve(data);
-                    } else if (data.result.code === 401 && data.result.internal_code === "invalid_token") {
+                .then(function (response) {
+                    console.log('Account Transactions Request succeeded with JSON response', response);
+                    if (response.result.code === 200 || response.result.code === 206) {
+                        const transactions = AccountTransactions.parseBbvaAccountTransactions(response.data.accountTransactions);
+                        resolve(transactions);
+                    } else if (response.result.code === 401 && response.result.internal_code === "invalid_token") {
                         this.refreshAuthToken(refresh);
                     } else {
-                        reject(data.result.info);
+                        reject(response.result.info);
                     }
                 }.bind(this))
                 .catch(function (error) {
@@ -210,3 +200,4 @@ export default class BbvaApi {
         }.bind(this));
     }
 }
+

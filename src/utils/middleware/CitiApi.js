@@ -1,5 +1,5 @@
 import uuid from 'uuid'
-import { Profile, Account } from './DataTypes'
+import { Profile, Accounts, Account, AccountTransactions } from './DataTypes'
 
 export default class CitiApi {
 
@@ -111,21 +111,7 @@ export default class CitiApi {
                 .then(function (response) {
                     console.log('Accounts Request succeeded with JSON response', response);
                     if (response.status === 200) {
-                        let accounts = [];
-                        response.data.accountGroupSummary.forEach(accountGroup => {
-                            accountGroup.accounts.forEach(account => {
-                                accounts.push(new Account({
-                                    accountKey: account.id,
-                                    description: account.description,
-                                    name: account.description,
-                                    number: account.number,
-                                    classification: account.type,
-                                    balance: account.balance,
-                                    currency: account.currency,
-                                    detailLink: account.links.detail.href
-                                }))
-                            })
-                        })
+                        const accounts = Accounts.parseCitiAccounts(response.data.accountGroupSummary);
                         resolve(accounts);
                         // } else if (response.status === 401 && data.result.internal_code === "invalid_token") {
                         //     this.refreshAuthToken(refresh)

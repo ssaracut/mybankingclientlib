@@ -3,6 +3,7 @@
 */
 import BbvaApi from './BbvaApi'
 import CitiApi from './CitiApi'
+import { Accounts } from './DataTypes'
 
 const ApiAdapters = {
     bbva: BbvaApi,
@@ -75,27 +76,29 @@ export default class MyBankingClientMiddleware {
     }
 
     static getAccounts() {
-        // return new Promise(function (resolve, reject) {
-        //     //get profile from datastore
-        //     let profile = JSON.parse(localStorage.getItem('profile'));
-        //     let accounts = [];
+        return new Promise(function (resolve, reject) {
+            //get profile from datastore
+            let profile = JSON.parse(localStorage.getItem('profile'));
 
-        //     //grab accounts info from each registered bank
-        //     const apiCalls = [];
-        //     for (let bank in profile.banks) {
-        //         apiCalls.push(ApiAdapters[bank].getAccounts())
-        //     }
+            //grab accounts info from each registered bank
+            const apiCalls = [];
+            for (let bank in profile.banks) {
+                apiCalls.push(ApiAdapters[bank].getAccounts())
+            }
 
-        //     Promise.all(apiCalls)
-        //         .then(function (values) {
-        //             resolve(accounts);
-        //         })
-        //         .catch(function (error) {
-        //             reject(error)
-        //         });
-        // })
-
-        return BbvaApi.getAccounts();
+            Promise.all(apiCalls)
+                .then(function (values) {
+                    let accounts = new Accounts();
+                    values.forEach(returnedAccounts => {
+                        accounts = [...accounts, ...returnedAccounts];
+                    })
+                    resolve(accounts);
+                })
+                .catch(function (error) {
+                    reject(error)
+                });
+        })
+        //return BbvaApi.getAccounts();
     }
 
     static getAccountTransactions(detailLink) {
