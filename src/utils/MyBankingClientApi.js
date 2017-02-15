@@ -1,4 +1,3 @@
-import middleware from './middleware/MyBankingClientMiddleware'
 
 export default class MyBankingClientApi {
 
@@ -27,18 +26,90 @@ export default class MyBankingClientApi {
     // convert to remote call to middleware
     static getApiAuthToken(api, code, redirectUri) {
         return new Promise(function (resolve, reject) {
-            middleware.getApiAuthToken(api,code, redirectUri)
-                .then(function (response) { resolve(response); })
-                .catch(function (error) { reject(error); });
+            const url = `/api/auth/bank/${api}`;
+            const options = {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                credentials: 'same-origin',
+                body: `code=${code}`
+            }
+            fetch(url, options)
+                .then(response =>
+                    response.json().then(json => ({
+                        status: response.status,
+                        data: json
+                    })))
+                .then(function (response) {
+                    console.log('Token Request succeeded with JSON response', response);
+                    if (response.status === 200) {
+                        resolve(response.data);
+                    } else {
+                        reject(response.data.result.info);
+                    }
+                })
+                .catch(function (error) {
+                    console.log('Token Request failed', error);
+                    reject(error);
+                });
+        })
+    }
+
+    static getBankProfile(bank) {
+        return new Promise(function (resolve, reject) {
+            const url = `/api/profile/${bank}`;
+            const options = {
+                method: 'GET',
+                credentials: 'same-origin'
+            }
+            fetch(url, options)
+                .then(response =>
+                    response.json().then(json => ({
+                        status: response.status,
+                        data: json
+                    })))
+                .then(function (response) {
+                    console.log('Token Request succeeded with JSON response', response);
+                    if (response.status === 200) {
+                        resolve({ bank, profile: response.data });
+                    } else {
+                        reject(response.data.info);
+                    }
+                })
+                .catch(function (error) {
+                    console.log('Token Request failed', error);
+                    reject(error);
+                });
         })
     }
 
     // convert to remote call to middleware
     static getProfile() {
         return new Promise(function (resolve, reject) {
-            middleware.getProfile()
-                .then(function(response){ resolve(response); })
-                .catch(function(error){ reject(error); })
+            const url = `/api/profile`;
+            const options = {
+                method: 'GET',
+                credentials: 'same-origin'
+            }
+            fetch(url, options)
+                .then(response =>
+                    response.json().then(json => ({
+                        status: response.status,
+                        data: json
+                    })))
+                .then(function (response) {
+                    console.log('Token Request succeeded with JSON response', response);
+                    if (response.status === 200) {
+                        resolve(response.data);
+                    } else {
+                        reject(response.data.result.info);
+                    }
+                })
+                .catch(function (error) {
+                    console.log('Token Request failed', error);
+                    reject(error);
+                });
         })
     }
 
@@ -46,8 +117,8 @@ export default class MyBankingClientApi {
     static setProfile(profile) {
         return new Promise(function (resolve, reject) {
             middleware.setProfile(profile)
-                .then(function(response){ resolve(response); })
-                .catch(function(error){ reject(error); })
+                .then(function (response) { resolve(response); })
+                .catch(function (error) { reject(error); })
         })
     }
 
@@ -55,7 +126,7 @@ export default class MyBankingClientApi {
     static login() {
         return new Promise(function (resolve, reject) {
             middleware.login()
-                .then(function(response) {
+                .then(function (response) {
                     localStorage.setItem('auth_data', JSON.stringify(response));
                     resolve(response);
                 })
@@ -66,19 +137,39 @@ export default class MyBankingClientApi {
     static logout() {
         return new Promise(function (resolve, reject) {
             middleware.logout()
-                .then(function(response) {
+                .then(function (response) {
                     localStorage.clear();
                     resolve(response);
                 })
         })
     }
-    
+
     // convert to remote call to middleware
-    static getAccounts() {
+    static getBankAccounts(bank) {
         return new Promise(function (resolve, reject) {
-            middleware.getAccounts()
-                .then(function(response){ resolve(response); })
-                .catch(function(error){ reject(error); })
+            const url = `/api/accounts/${bank}`;
+            const options = {
+                method: 'GET',
+                credentials: 'same-origin'
+            }
+            fetch(url, options)
+                .then(response =>
+                    response.json().then(json => ({
+                        status: response.status,
+                        data: json
+                    })))
+                .then(function (response) {
+                    console.log('Token Request succeeded with JSON response', response);
+                    if (response.status === 200) {
+                        resolve({ bank, accounts: response.data });
+                    } else {
+                        reject(response.data.result.info);
+                    }
+                })
+                .catch(function (error) {
+                    console.log('Token Request failed', error);
+                    reject(error);
+                });
         })
     }
 
@@ -86,8 +177,8 @@ export default class MyBankingClientApi {
     static getAccountTransactions(detailLink) {
         return new Promise(function (resolve, reject) {
             middleware.getAccountTransactions(detailLink)
-                .then(function(response){ resolve(response); })
-                .catch(function(error){ reject(error); })
+                .then(function (response) { resolve(response); })
+                .catch(function (error) { reject(error); })
         })
     }
 

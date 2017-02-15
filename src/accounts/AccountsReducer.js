@@ -7,9 +7,11 @@ const _initialState = {
 }
 export default function (state = _initialState, action) {
     switch (action.type) {
-        case 'GET_ACCOUNTS':
-            if (!action.error && action.payload) {
-                return { ...state, accountState: { ...state.accountState, accounts: action.payload } };
+        case 'GET_BANK_ACCOUNTS':
+            if (!action.error) {
+                const bank = action.payload.bank;
+                const accounts = action.payload.accounts;
+                return { ...state, accountState: { ...state.accountState, accounts: { ...state.accountState.accounts, [bank]: accounts } } };
             } else {
                 return state;
             }
