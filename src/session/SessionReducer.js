@@ -1,7 +1,7 @@
 const _initialState = {
     session: {
         loggedIn: false,
-        auth_data: undefined,
+        state: undefined,
         profile: undefined,
         nav: {
             items: [
@@ -28,9 +28,9 @@ export default function (state = _initialState, action) {
             } else {
                 return state;
             }
-        case 'GET_STORED_AUTH_DATA':
+        case 'GET_STORED_STATE_DATA':
             if (action.payload) {
-                return { ...state, session: { ...state.session, loggedIn: true, nav: loggedInNav, options: [logoutOption], auth_data: action.payload } };
+                return { ...state, session: { ...state.session, loggedIn: true, nav: loggedInNav, options: [logoutOption], state: action.payload } };
             } else {
                 return state;
             }

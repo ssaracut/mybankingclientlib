@@ -1,18 +1,12 @@
 
 export default class MyBankingClientApi {
 
-    static getStoredAuthData() {
-        return new Promise(function (resolve, reject) {
-            //grab auth-data from local store and return
-            resolve(JSON.parse(localStorage.getItem('auth_data')));
-        })
+    static getStoredStateData() {
+        return JSON.parse(sessionStorage.getItem('state'));
     }
 
-    static setStoredAuthData(data) {
-        return new Promise(function (resolve, reject) {
-            //store auth-data to local store and return
-            resolve(JSON.stringify(localStorage.setItem('auth_data', data)));
-        })
+    static setStoredStateData(data) {
+        sessionStorage.setItem('state', JSON.stringify(data));
     }
 
     //not sure why this is here? will probably move it out
@@ -124,24 +118,12 @@ export default class MyBankingClientApi {
 
     // convert to remote call to middleware
     static login() {
-        return new Promise(function (resolve, reject) {
-            middleware.login()
-                .then(function (response) {
-                    localStorage.setItem('auth_data', JSON.stringify(response));
-                    resolve(response);
-                })
-        })
+        sessionStorage.setItem('state', JSON.stringify({}));
     }
 
     // convert to remote call to middleware
     static logout() {
-        return new Promise(function (resolve, reject) {
-            middleware.logout()
-                .then(function (response) {
-                    localStorage.clear();
-                    resolve(response);
-                })
-        })
+        sessionStorage.clear();
     }
 
     // convert to remote call to middleware
